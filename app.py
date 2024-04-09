@@ -36,6 +36,7 @@ def predict():
     data = request.get_json()
     features_list = data['features']
     features_df = pd.DataFrame(features_list, columns=['rideable_type', 'day_of_week', 'month', 'season', 'trip_duration_mins', 'hour', 'trips', 'day_of_month'])
+    model = load('random_forest_member_type_model_final.joblib')
     predictions = model.predict(features_df)
     return jsonify(predictions.tolist())
 
