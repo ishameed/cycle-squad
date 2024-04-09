@@ -16,6 +16,7 @@ app = Flask(__name__)
 
 MODEL_URL = 'https://heroku-model.s3.amazonaws.com/random_forest_member_type_model.joblib' 
 MODEL_PATH = 'random_forest_member_type_model_final.joblib'
+model = 'temp'
 
 if not os.path.isfile(MODEL_PATH):
     print("Downloading model from S3...")
