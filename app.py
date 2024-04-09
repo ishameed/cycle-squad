@@ -26,15 +26,16 @@ if not os.path.isfile(MODEL_PATH):
         with open(MODEL_PATH, 'wb') as f:
             for chunk in response.iter_content(chunk_size=8192):
                 f.write(chunk)
+        model = load('random_forest_member_type_model_final.joblib')
     else:
         print(f"Failed to download model, status code: {response.status_code}")
+
 
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.get_json()
     features_list = data['features']
     features_df = pd.DataFrame(features_list, columns=['rideable_type', 'day_of_week', 'month', 'season', 'trip_duration_mins', 'hour', 'trips', 'day_of_month'])
-    model = load('random_forest_member_type_model_final.joblib')
     predictions = model.predict(features_df)
     return jsonify(predictions.tolist())
 
