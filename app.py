@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+import requests
 from joblib import load
 import pandas as pd
 import os
