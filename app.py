@@ -16,20 +16,17 @@ app = Flask(__name__)
 MODEL_URL = 'https://heroku-model.s3.amazonaws.com/random_forest_member_type_model.joblib' 
 MODEL_PATH = 'random_forest_member_type_model_final.joblib'
 
-@app.before_first_request
-def download_model():
-    # Check if the model is already present locally
-    if not os.path.isfile(MODEL_PATH):
-        print("Downloading model from S3...")
-        response = requests.get(MODEL_URL, stream=True)
+if not os.path.isfile(MODEL_PATH):
+    print("Downloading model from S3...")
+    response = requests.get(MODEL_URL, stream=True)
 
-        # Check if the request was successful
-        if response.status_code == 200:
-            with open(MODEL_PATH, 'wb') as f:
-                for chunk in response.iter_content(chunk_size=8192):
-                    f.write(chunk)
-        else:
-            print(f"Failed to download model, status code: {response.status_code}")
+    # Check if the request was successful
+    if response.status_code == 200:
+        with open(MODEL_PATH, 'wb') as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                f.write(chunk)
+    else:
+        print(f"Failed to download model, status code: {response.status_code}")
 
 @app.route('/predict', methods=['POST'])
 def predict():
